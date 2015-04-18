@@ -2,7 +2,7 @@
 // Zabbix GUI configuration file
 global $DB;
 $DB["TYPE"]           = 'MYSQL';
-$DB["SERVER"]         = 'zabbix.db';
+$DB["SERVER"]         = 'DB_ADDRESS';
 $DB["PORT"]           = '3306';
 $DB["DATABASE"]       = 'zabbix';
 $DB["USER"]           = 'DB_USER';
