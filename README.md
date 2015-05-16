@@ -49,9 +49,13 @@ Access web interface under
 
 Follow the on screen instructions.
 
+### Zabbix Push Notifications
+Zabbix notification script is located in `/usr/local/share/zabbix/alertscripts`  
+Please follow [Zabbkit manual](https://www.zabbix.com/forum/showthread.php?t=41967) to configure notifications. 
 
 ## Author
   
 Author: Przemyslaw Ozgo (<linux@ozgo.info>)
 
 ---
+	
