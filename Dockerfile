@@ -13,8 +13,16 @@ RUN \
   yum clean all && \
   rm -f /tmp/*.*
 
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk/bin/java JAVA=/usr/lib/jvm/java-1.8.0-openjdk/bin/java DB_ADDRESS=127.0.0.1 DB_USER=admin DB_PASS=password
+ENV \
+  JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk/bin/java \
+  JAVA=/usr/lib/jvm/java-1.8.0-openjdk/bin/java \
+  DB_ADDRESS=127.0.0.1 DB_USER=admin DB_PASS=password \
+  ZABBIX_ADMIN_EMAIL=default@domain.com \
+  ZABBIX_SMTP_SERVER=default.smtp.server.com \
+  ZABBIX_SMTP_USER=default.smtp.username \
+  ZABBIX_SMTP_PASS=default.smtp.password
 
 COPY container-files /
+
 
 EXPOSE 10051 10052 80

@@ -40,6 +40,21 @@ Example:
 `--env="DB_PASS=my_password" \`  
 `million12/zabbix-server`
 
+With email settings:
+`docker run \`  
+`-d \`  
+`--name zabbix \`  
+`-p 80:80 \`  
+`-p 10051:10051 \`  
+`--env="DB_ADDRESS=database_ip" \`  
+`--env="DB_USER=username" \`  
+`--env="DB_PASS=my_password" \`  
+`--env="ZABBIX_ADMIN_EMAIL=default@domain.com" \`  
+`--env="ZABBIX_SMTP_SERVER=default.smtp.server.com" \`  
+`--env="ZABBIX_SMTP_USER=default.smtp.username" \`  
+`--env="ZABBIX_SMTP_PASS=default.smtp.password" \`  
+`million12/zabbix-server`
+
 ### Access Zabbix-Server web interface 
 To log in into zabbix-server for the first time use credentials `Admin:zabbix`.  
 
@@ -52,6 +67,25 @@ Follow the on screen instructions.
 ### Zabbix Push Notifications
 Zabbix notification script is located in `/usr/local/share/zabbix/alertscripts`  
 Please follow [Zabbkit manual](https://www.zabbix.com/forum/showthread.php?t=41967) to configure notifications. 
+
+### Email Notifications (Server settings)
+Using environmental variables on `docker run` you can edit default email server settings. Valuse would be added on into `/usr/local/share/zabbix/alertscripts/zabbix_sendmail.sh`.  
+Environmental variables are:  
+`ZABBIX_ADMIN_EMAIL=default@domain.com`  
+`ZABBIX_SMTP_SERVER=default.smtp.server.com`  
+`ZABBIX_SMTP_USER=default.smtp.username`  
+`ZABBIX_SMTP_PASS=default.smtp.password`  
+
+Configuration: 
+Go into `Administration/Media types` and add new type using `script` as Type. Script name should be `zabbix_sendmail.sh`  
+![Media type](images/media-type.jpg)  
+Next go to `Configuration/Actions` and create new action. Select recovery message.   
+![Actions1](images/actions1.jpg)  
+Next select tab `Operations` and click New to add new action. In `Send to User groups` add Zabbix Adminstrator or any user group you like.  In `Send only to` select Name of your previously created `Media type` name.  
+![Actions2](images/actions2.jpg)  
+Next go to `Administration/Users` and select your user. Go to Media tab and add new Media. In `Type` select your `Media type` you have created in first step. Add your email addess and enjoy receiving emails.  
+![User-Media](images/user-media.jpg)
+ 
 
 ## Author
   

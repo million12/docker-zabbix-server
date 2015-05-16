@@ -54,6 +54,12 @@ update_config() {
   sed -i 's/DB_USER/'${DB_USER}'/g' /usr/local/etc/web/zabbix.conf.php
   sed -i 's/DB_PASS/'${DB_PASS}'/g' /usr/local/etc/web/zabbix.conf.php
 }
+email_setup() {
+  sed -i 's/default@domain.com/'${ZABBIX_ADMIN_EMAIL}'/g' /usr/local/share/zabbix/alertscripts/zabbix_sendmail.sh
+  sed -i 's/default.smtp.server.com/'${ZABBIX_SMTP_SERVER}'/g' /usr/local/share/zabbix/alertscripts/zabbix_sendmail.sh
+  sed -i 's/default.smtp.username/'${ZABBIX_SMTP_USER}'/g' /usr/local/share/zabbix/alertscripts/zabbix_sendmail.sh
+  sed -i 's/default.smtp.password/'${ZABBIX_SMTP_PASS}'/g' /usr/local/share/zabbix/alertscripts/zabbix_sendmail.sh
+}
 ####################### End of default settings #######################
 # Zabbix default sql files 
 ZABBIX_SQL_DIR="/usr/local/src/zabbix/database/mysql"
@@ -71,8 +77,11 @@ if ! mysql -u ${DB_USER} -p${DB_PASS} -h ${DB_ADDRESS} -e "use zabbix;"; then
   log `create_db`
   log "Database and user created. Importing Default SQL"
   log `import_zabbix_db`
-  log "Import Finished. Starting server"
+  log "Import Finished. Starting"
 else 
   log "Zabbix DB Exists. Starting server."
 fi
+log "Editing Admin Email Server Settings"
+email_setup
+log "Email server settings updated."
 zabbix_agentd -c /usr/local/etc/zabbix_agentd.conf
