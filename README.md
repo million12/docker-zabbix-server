@@ -40,7 +40,7 @@ Example:
 `--env="DB_PASS=my_password" \`  
 `million12/zabbix-server`
 
-With email settings:
+With email settings and Slack integration:
 `docker run \`  
 `-d \`  
 `--name zabbix \`  
@@ -53,6 +53,7 @@ With email settings:
 `--env="ZABBIX_SMTP_SERVER=default.smtp.server.com" \`  
 `--env="ZABBIX_SMTP_USER=default.smtp.username" \`  
 `--env="ZABBIX_SMTP_PASS=default.smtp.password" \`  
+`--env="SLACK_WEBHOOK=https://hooks.slack.com/services/QQ3PTH/B67THC0D3/ABCDGabcDEF124" \`  
 `million12/zabbix-server`
 
 ### Access Zabbix-Server web interface 
@@ -86,10 +87,16 @@ Next select tab `Operations` and click New to add new action. In `Send to User g
 Next go to `Administration/Users` and select your user. Go to Media tab and add new Media. In `Type` select your `Media type` you have created in first step. Add your email addess and enjoy receiving emails.  
 ![User-Media](images/user-media.jpg)
  
+### Slack Integration
+This docker image comes with Slack integrations script. You need to provide your `WebHook` generated in yo your Slack account. it should look like `https://hooks.slack.com/services/QQ3PTH/B67THC0D3/ABCDGabcDEF124`   
+
+Note: this Slack Integration script is based on one originally developed by [ericoc/zabbix-slack-alertscript](https://github.com/ericoc/zabbix-slack-alertscript).
+For deatiled installation please see [ericoc instructions](https://github.com/ericoc/zabbix-slack-alertscript). 
 
 ## Author
   
 Author: Przemyslaw Ozgo (<linux@ozgo.info>)
 
 ---
-	
+
+**Sponsored by** [Typostrap.io - the new prototyping tool](http://typostrap.io/) for building highly-interactive prototypes of your website or web app. Built on top of TYPO3 Neos CMS and Zurb Foundation framework.
