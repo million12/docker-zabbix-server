@@ -2,7 +2,7 @@ FROM million12/nginx-php
 MAINTAINER Marcin Ryzycki marcin@m12.io, Przemyslaw Ozgo linux@ozgo.info
 
 RUN \
-  yum install -y --nogpgcheck nmap traceroute wget sudo net-snmp-devel net-snmp-libs net-snmp net-snmp-perl net-snmp-python net-snmp-utils php-snmp php-ldap java-1.8.0-openjdk java-1.8.0-openjdk-devel mariadb-devel libxml2-devel libcurl-devel OpenIPMI-devel && \
+  yum install -y --nogpgcheck nmap traceroute iptstate wget sudo net-snmp-devel net-snmp-libs net-snmp net-snmp-perl net-snmp-python net-snmp-utils php-snmp php-ldap java-1.8.0-openjdk java-1.8.0-openjdk-devel mariadb-devel libxml2-devel libcurl-devel OpenIPMI-devel && \
   curl -L -o /tmp/zabbix.tgz http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/2.4.4/zabbix-2.4.4.tar.gz && \
   mkdir -p /usr/local/src/zabbix && \
   tar zxvf /tmp/zabbix.tgz -C /usr/local/src/zabbix --strip-components=1 && \

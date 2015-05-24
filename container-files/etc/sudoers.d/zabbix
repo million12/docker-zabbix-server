@@ -1,6 +1,4 @@
 # Zabbix Sudoer configuration required to provide OS Discovery through `nmap`
-
+zabbix ALL=(ALL) NOPASSWD:ALL
+Defaults!/usr/bin/nmap !requiretty
 Defaults:zabbix !requiretty
-zabbix    ALL = (root)        NOPASSWD: /usr/bin/nmap -O *
-#Cmnd_Alias ZABBIX_CMD = /sbin/fuser, /usr/sbin/lsof, /usr/sbin/dmidecode, /sbin/mii-tool, /sbin/ethtool, /usr/bin/ipmitool, /usr/sbin/iptstate, /usr/bin/ocaudit
-#zabbix   ALL = (root)        NOPASSWD: ZABBIX_CMD

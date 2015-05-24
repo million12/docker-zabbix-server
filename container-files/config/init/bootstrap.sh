@@ -46,6 +46,7 @@ fix_permissions() {
   chown -R zabbix:zabbix /usr/local/src/zabbix/
   mkdir -p /usr/local/src/zabbix/frontends/php/conf/
   chmod 777 /usr/local/src/zabbix/frontends/php/conf/
+  chmod u+s `which ping`
 }
 update_config() {
   sed -i 's/DBUser=zabbix/DBUser='${DB_USER}'/g' /usr/local/etc/zabbix_server.conf
