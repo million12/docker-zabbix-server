@@ -1,4 +1,4 @@
-FROM million12/zabbix-server-base
+FROM million12/zabbix-server-base:2.4.5
 MAINTAINER Marcin Ryzycki marcin@m12.io, Przemyslaw Ozgo linux@ozgo.info
 
 ENV \
