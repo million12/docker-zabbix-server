@@ -13,6 +13,8 @@ RUN \
   ./configure --enable-server --enable-agent --with-mysql --enable-java --with-net-snmp --with-libcurl --with-libxml2 --with-openipmi && \
   make dbschema && \
   make install && \
+  rpm -e --nodeps make gcc && \
+  yum remove -y svn automake mariadb-devel java-1.8.0-openjdk-devel libxml2-devel libcurl-devel OpenIPMI-devel && \
   yum clean all
 
 ENV \
