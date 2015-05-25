@@ -1,17 +1,19 @@
 FROM million12/nginx-php
 MAINTAINER Marcin Ryzycki marcin@m12.io, Przemyslaw Ozgo linux@ozgo.info
 
+ENV ZABBIX_VERSION=2.4.5
+
 RUN \
-  yum install -y --nogpgcheck nmap traceroute iptstate wget sudo net-snmp-devel net-snmp-libs net-snmp net-snmp-perl net-snmp-python net-snmp-utils php-snmp php-ldap java-1.8.0-openjdk java-1.8.0-openjdk-devel mariadb-devel libxml2-devel libcurl-devel OpenIPMI-devel && \
-  curl -L -o /tmp/zabbix.tgz http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/2.4.5/zabbix-2.4.5.tar.gz && \
-  mkdir -p /usr/local/src/zabbix && \
-  tar zxvf /tmp/zabbix.tgz -C /usr/local/src/zabbix --strip-components=1 && \
-  rm -f /tmp/zabbix.tgz && \
+  yum clean all && yum makecache && \
+  yum update --nogpgcheck -y && \
+  yum install --nogpgcheck -y svn gcc automake make nmap traceroute iptstate wget sudo net-snmp-devel net-snmp-libs net-snmp net-snmp-perl net-snmp-python net-snmp-utils php-snmp php-ldap java-1.8.0-openjdk java-1.8.0-openjdk-devel mariadb-devel libxml2-devel libcurl-devel OpenIPMI-devel && \
+  svn co svn://svn.zabbix.com/tags/${ZABBIX_VERSION} /usr/local/src/zabbix && \
   cd /usr/local/src/zabbix && \
+  ./bootstrap.sh && \
   ./configure --enable-server --enable-agent --with-mysql --enable-java --with-net-snmp --with-libcurl --with-libxml2 --with-openipmi && \
+  make dbschema && \
   make install && \
-  yum clean all && \
-  rm -f /tmp/*.*
+  yum clean all
 
 ENV \
   JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk/bin/java \
