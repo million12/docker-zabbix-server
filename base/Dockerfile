@@ -1,7 +1,7 @@
 FROM million12/nginx-php
 MAINTAINER Marcin Ryzycki marcin@m12.io, Przemyslaw Ozgo linux@ozgo.info
 
-ENV ZABBIX_VERSION=2.4.5
+ENV ZABBIX_VERSION=2.4.0rc1
 
 RUN \
   yum clean all && yum makecache && \

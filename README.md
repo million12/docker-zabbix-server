@@ -2,7 +2,7 @@
 [Docker Image](https://registry.hub.docker.com/u/million12/zabbix-server/) with Zabbix Server using CentOS-7 and Supervisor.
 Image is using external datbase. 
 
-[![Circle CI](https://circleci.com/gh/million12/docker-zabbix-server/tree/master.svg?style=svg)](https://circleci.com/gh/million12/docker-zabbix-server/tree/master)
+[![Circle CI](https://circleci.com/gh/million12/docker-zabbix-server/tree/2.4.svg?style=svg)](https://circleci.com/gh/million12/docker-zabbix-server/tree/2.4)
 
 ### Database deployment
 To be able to connect to database we would need one to be running first. Easiest way to do that is to use another docker image. For this purpose we will use our [million12/mariadb](https://registry.hub.docker.com/u/million12/mariadb/) image as our database.
