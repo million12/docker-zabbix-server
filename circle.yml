@@ -13,7 +13,7 @@ dependencies:
       - docker run -d --name=db --env="MARIADB_USER=$DB_USER" --env="MARIADB_PASS=$DB_PASS" million12/mariadb
       - docker logs -f db | tee -a ${CIRCLE_ARTIFACTS}/db.log:
           background: true
-      - docker build -t million12/zabbix-server-base:test base/.
+      - docker build -t million12/zabbix-server-base:test .
 
 test:
   override:
