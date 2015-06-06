@@ -83,19 +83,38 @@ Environmental variables are:
 
 Configuration: 
 Go into `Administration/Media types` and add new type using `script` as Type. Script name should be `zabbix_sendmail.sh`  
-![Media type](images/media-type.jpg)  
+
+![Media type](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/media-type.jpg)  
+
 Next go to `Configuration/Actions` and create new action. Select recovery message.   
-![Actions1](images/actions1.jpg)  
+
+![Actions1](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/actions1.jpg)  
+
 Next select tab `Operations` and click New to add new action. In `Send to User groups` add Zabbix Adminstrator or any user group you like.  In `Send only to` select Name of your previously created `Media type` name.  
-![Actions2](images/actions2.jpg)  
+
+![Actions2](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/actions2.jpg)  
+
 Next go to `Administration/Users` and select your user. Go to Media tab and add new Media. In `Type` select your `Media type` you have created in first step. Add your email addess and enjoy receiving emails.  
-![User-Media](images/user-media.jpg)
+  
+![User-Media](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/user-media.jpg)
  
 ### Slack Integration
 This docker image comes with Slack integrations script. You need to provide your `WebHook` generated in yo your Slack account. it should look like `https://hooks.slack.com/services/QQ3PTH/B67THC0D3/ABCDGabcDEF124`   
 
 Note: this Slack Integration script is based on one originally developed by [ericoc/zabbix-slack-alertscript](https://github.com/ericoc/zabbix-slack-alertscript).
 For deatiled installation please see [ericoc instructions](https://github.com/ericoc/zabbix-slack-alertscript). 
+
+### Nginx Template 
+Nginx stats script is located in `/usr/local/share/zabbix/externalscripts/`.  
+It's latest version of [vicendominguez/nginx-zabbix-template](https://github.com/vicendominguez/nginx-zabbix-template) official Zabbix communty repo.  
+Gathering data is done by `getNginxInfo.py` which is already installed in this image. User need to install template to be able to use this feature.  
+Go to `Configuration/Templates` and select `Import` and import file located in this repo in `templates-files` directory called `zbx_nginx_template.xml`  
+
+![Nginx1](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/nginx1.jpg)  
+
+![Nginx2](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/nginx2.jpg)  
+
+More details in official documentation [here](https://github.com/vicendominguez/nginx-zabbix-template). 
 
 ## Author
   
