@@ -104,7 +104,7 @@ This docker image comes with Slack integrations script. You need to provide your
 Note: this Slack Integration script is based on one originally developed by [ericoc/zabbix-slack-alertscript](https://github.com/ericoc/zabbix-slack-alertscript).
 For deatiled installation please see [ericoc instructions](https://github.com/ericoc/zabbix-slack-alertscript). 
 
-### Nginx Template 
+### Nginx Status Template 
 Nginx stats script is located in `/usr/local/share/zabbix/externalscripts/`.  
 It's latest version of [vicendominguez/nginx-zabbix-template](https://github.com/vicendominguez/nginx-zabbix-template) official Zabbix communty repo.  
 Gathering data is done by `getNginxInfo.py` which is already installed in this image. User need to install template to be able to use this feature.  
@@ -115,6 +115,27 @@ Go to `Configuration/Templates` and select `Import` and import file located in t
 ![Nginx2](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/nginx2.jpg)  
 
 More details in official documentation [here](https://github.com/vicendominguez/nginx-zabbix-template). 
+
+### PHP-FPM Status Template
+PHP-FPM Status template assumes that your Nginx server is configured to serve stats under `/fpm_status` url and port 80. If you you want to use custom port please edit necessary files. 
+
+Example of `nginx.conf` file:
+
+    location /fpm_status {
+    access_log off;
+    allow 127.0.0.1;
+    deny all;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_pass php-upstream;
+    }  
+
+Installation:  
+Go to Configuration/Templates and select Import and import file located in this repo in templates-files directory called `zabbix-php-fpm-template.xml`
+
+Screenshots:  
+![PHP-FPM](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/php-fpm-stats.jpg)
+
 
 ## Author
   
