@@ -6,6 +6,12 @@
 Image is using external datbase.  
 This image is using offcial [zabbix-server-2.4](https://registry.hub.docker.com/u/zabbix/zabbix-server-2.4/) Docker Image as base image. 
 
+#### Installed Plugins
+>    Email Notifications with authorisation  
+>    Slack Notifications  
+>    Nginx Status `/nginx_status`  
+>    PHP-FPM Status `/fpm_status`      
+
 ### Database deployment
 To be able to connect to database we would need one to be running first. Easiest way to do that is to use another docker image. For this purpose we will use our [million12/mariadb](https://registry.hub.docker.com/u/million12/mariadb/) image as our database.
 
