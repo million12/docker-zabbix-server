@@ -4,13 +4,13 @@
 
 [Docker Image](https://registry.hub.docker.com/u/million12/zabbix-server/) with Zabbix Server using CentOS-7 and Supervisor.
 Image is using external datbase.  
-This image is using offcial [zabbix-server-2.4](https://registry.hub.docker.com/u/zabbix/zabbix-server-2.4/) Docker Image as base image. 
+This image is using offcial [zabbix-server-2.4](https://registry.hub.docker.com/u/zabbix/zabbix-server-2.4/) Docker Image as base image.
 
 #### Installed Plugins
 >    Email Notifications with authorisation  
 >    Slack Notifications  
 >    Nginx Status `/nginx_status`  
->    PHP-FPM Status `/fpm_status`      
+>    PHP-FPM Status `/fpm_status`
 
 ### Database deployment
 To be able to connect to database we would need one to be running first. Easiest way to do that is to use another docker image. For this purpose we will use our [million12/mariadb](https://registry.hub.docker.com/u/million12/mariadb/) image as our database.
@@ -37,6 +37,11 @@ In this Image you can use environmental variables to connect into external MySQL
 `DB_PASS` = database password  
 `DB_ADDRESS` = database address (either ip or domain-name).
 
+Or you can use a linked container (MySQL/MariaDB) with a name `db` which exposes these environmental variables:
+
+`MYSQL_ROOT_PASSWORD` or `MARIADB_USER`
+`MYSQL_USER` or `MARIADB_PASS`
+
 ### Zabbix-Server  Deployment
 Now when we have our database running we can deploy zabbix-server image with appropriate environmental variables set.
 
@@ -52,7 +57,7 @@ Example:
 		--env="DB_PASS=my_password" \
 		million12/zabbix-server
 With email settings and Slack integration:  
-	
+
 	docker run \
 		-d \
 		--name zabbix \
@@ -68,7 +73,19 @@ With email settings and Slack integration:
 		--env="SLACK_WEBHOOK=https://hooks.slack.com/services/QQ3PTH/B67THC0D3/ABCDGabcDEF124" \
 		million12/zabbix-server
 
-### Access Zabbix-Server web interface 
+With MySQL/MariaDB linked container:
+
+~~~
+docker run \
+	-d \
+	--name zabbix \
+	-p 80:80 \
+	-p 10051:10051 \
+	--link some-mariadb:db
+	million12/zabbix-server
+~~~
+
+### Access Zabbix-Server web interface
 To log in into zabbix-server for the first time use credentials `Admin:zabbix`.  
 
 Access web interface under [http://docker_host.ip]()  
@@ -77,7 +94,7 @@ Follow the on screen instructions.
 
 ### Zabbix Push Notifications
 Zabbix notification script is located in `/usr/local/share/zabbix/alertscripts`  
-Please follow [Zabbkit manual](https://www.zabbix.com/forum/showthread.php?t=41967) to configure notifications. 
+Please follow [Zabbkit manual](https://www.zabbix.com/forum/showthread.php?t=41967) to configure notifications.
 
 ### Email Notifications (Server settings)
 Using environmental variables on `docker run` you can edit default email server settings. Valuse would be added on into `/usr/local/share/zabbix/alertscripts/zabbix_sendmail.sh`.  
@@ -87,12 +104,12 @@ Environmental variables are:
 `ZABBIX_SMTP_USER=default.smtp.username`  
 `ZABBIX_SMTP_PASS=default.smtp.password`  
 
-Configuration: 
+Configuration:
 Go into `Administration/Media types` and add new type using `script` as Type. Script name should be `zabbix_sendmail.sh`  
 
 ![Media type](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/media-type.jpg)  
 
-Next go to `Configuration/Actions` and create new action. Select recovery message.   
+Next go to `Configuration/Actions` and create new action. Select recovery message.
 
 ![Actions1](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/actions1.jpg)  
 
@@ -101,16 +118,16 @@ Next select tab `Operations` and click New to add new action. In `Send to User g
 ![Actions2](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/actions2.jpg)  
 
 Next go to `Administration/Users` and select your user. Go to Media tab and add new Media. In `Type` select your `Media type` you have created in first step. Add your email addess and enjoy receiving emails.  
-  
+
 ![User-Media](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/user-media.jpg)
- 
+
 ### Slack Integration
-This docker image comes with Slack integrations script. You need to provide your `WebHook` generated in yo your Slack account. it should look like `https://hooks.slack.com/services/QQ3PTH/B67THC0D3/ABCDGabcDEF124`   
+This docker image comes with Slack integrations script. You need to provide your `WebHook` generated in yo your Slack account. it should look like `https://hooks.slack.com/services/QQ3PTH/B67THC0D3/ABCDGabcDEF124`
 
 Note: this Slack Integration script is based on one originally developed by [ericoc/zabbix-slack-alertscript](https://github.com/ericoc/zabbix-slack-alertscript).
-For deatiled installation please see [ericoc instructions](https://github.com/ericoc/zabbix-slack-alertscript). 
+For deatiled installation please see [ericoc instructions](https://github.com/ericoc/zabbix-slack-alertscript).
 
-### Nginx Status Template 
+### Nginx Status Template
 Nginx stats script is located in `/usr/local/share/zabbix/externalscripts/`.  
 It's latest version of [vicendominguez/nginx-zabbix-template](https://github.com/vicendominguez/nginx-zabbix-template) official Zabbix communty repo.  
 Gathering data is done by `getNginxInfo.py` which is already installed in this image. User need to install template to be able to use this feature.  
@@ -120,10 +137,10 @@ Go to `Configuration/Templates` and select `Import` and import file located in t
 
 ![Nginx2](https://raw.githubusercontent.com/million12/docker-zabbix-server/master/images/nginx2.jpg)  
 
-More details in official documentation [here](https://github.com/vicendominguez/nginx-zabbix-template). 
+More details in official documentation [here](https://github.com/vicendominguez/nginx-zabbix-template).
 
 ### PHP-FPM Status Template
-PHP-FPM Status template assumes that your Nginx server is configured to serve stats under `/fpm_status` url and port 80. If you you want to use custom port please edit necessary files. 
+PHP-FPM Status template assumes that your Nginx server is configured to serve stats under `/fpm_status` url and port 80. If you you want to use custom port please edit necessary files.
 
 Example of `nginx.conf` file:
 
@@ -144,7 +161,7 @@ Screenshots:
 
 
 ## Author
-  
+
 Author: Przemyslaw Ozgo (<linux@ozgo.info>)
 
 ---
