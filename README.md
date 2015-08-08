@@ -42,6 +42,10 @@ Or you can use a linked container (MySQL/MariaDB) with a name `db` which exposes
 `MYSQL_ROOT_PASSWORD` or `MARIADB_USER`
 `MYSQL_USER` or `MARIADB_PASS`
 
+You can also set a custom timezone using the `TIME_ZONE` environmental variable:
+
+`TIME_ZONE` = Custom timezone (e.g: America/Santiago; it takes a default of UTC)
+
 ### Zabbix-Server  Deployment
 Now when we have our database running we can deploy zabbix-server image with appropriate environmental variables set.
 
@@ -56,7 +60,7 @@ Example:
 		--env="DB_USER=username" \
 		--env="DB_PASS=my_password" \
 		million12/zabbix-server
-With email settings and Slack integration:  
+With email settings and Slack integration and custom timezone:  
 
 	docker run \
 		-d \
@@ -71,6 +75,7 @@ With email settings and Slack integration:
 		--env="ZABBIX_SMTP_USER=default.smtp.username" \
 		--env="ZABBIX_SMTP_PASS=default.smtp.password" \
 		--env="SLACK_WEBHOOK=https://hooks.slack.com/services/QQ3PTH/B67THC0D3/ABCDGabcDEF124" \
+		--env="TIME_ZONE=America/Santiago" \
 		million12/zabbix-server
 
 With MySQL/MariaDB linked container:
