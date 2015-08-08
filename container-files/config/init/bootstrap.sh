@@ -9,6 +9,12 @@ white=`tput setaf 7`
 bold=`tput bold`
 reset=`tput sgr0`
 separator=$(echo && printf '=%.0s' {1..100} && echo)
+
+# Links mysql db via docker links or uses the DB_ADDRESS/DB_USER/DB_PASS env variables
+DB_ADDRESS=${DB_PORT_3306_TCP_ADDR:-$(echo $DB_ADDRESS)}
+DB_PASS=${DB_ENV_MYSQL_ROOT_PASSWORD:-$(echo $DB_PASS)}
+DB_USER=${DB_ENV_MYSQL_USER:-$(echo $DB_USER)}
+
 # Logging Finctions
 log() {
   if [[ "$@" ]]; then echo "${bold}${green}[LOG `date +'%T'`]${reset} $@";
@@ -52,9 +58,9 @@ fix_permissions() {
 update_config() {
   sed -i 's/DBUser=zabbix/DBUser='${DB_USER}'/g' /usr/local/etc/zabbix_server.conf
   sed -i 's/DBPassword=zabbix/DBPassword='${DB_PASS}'/g' /usr/local/etc/zabbix_server.conf
-  sed -i 's/DB_USER/'${DB_ADDRESS}'/g' /usr/local/etc/web/zabbix.conf.php
-  sed -i 's/DB_USER/'${DB_USER}'/g' /usr/local/etc/web/zabbix.conf.php
-  sed -i 's/DB_PASS/'${DB_PASS}'/g' /usr/local/etc/web/zabbix.conf.php
+  sed -i 's/DBHost=zabbix.db/DBHost='${DB_ADDRESS}'/g' /usr/local/etc/zabbix_server.conf
+  sed -i 's/DB_ADDRESS/'${DB_ADDRESS}'/g' /usr/local/src/zabbix/frontends/php/conf/zabbix.conf.php
+  sed -i 's/DB_USER/'${DB_USER}'/g' /usr/local/src/zabbix/frontends/php/conf/zabbix.conf.php
 }
 email_setup() {
   sed -i 's/default@domain.com/'${ZABBIX_ADMIN_EMAIL}'/g' /usr/local/share/zabbix/alertscripts/zabbix_sendmail.sh
