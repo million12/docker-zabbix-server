@@ -13,7 +13,7 @@ separator=$(echo && printf '=%.0s' {1..100} && echo)
 # Links mysql db via docker links or uses the DB_ADDRESS/DB_USER/DB_PASS env variables
 DB_ADDRESS=${DB_PORT_3306_TCP_ADDR:-$(echo $DB_ADDRESS)}
 DB_PASS=${DB_ENV_MYSQL_ROOT_PASSWORD:-$(echo ${DB_ENV_MARIADB_PASS:-$(echo $DB_PASS)})}
-DB_USER=${DB_ENV_MYSQL_USER:-$(echo ${DB_ENV_MARIADB_USER:-$(echo $DB_PASS)})}
+DB_USER=${DB_ENV_MYSQL_USER:-$(echo ${DB_ENV_MARIADB_USER:-$(echo $DB_USER)})}
 
 # Sets the default timezone
 TIME_ZONE=${TIME_ZONE:-UTC} # Sets the time zone based on the TIME_ZONE env var, or uses UTC
