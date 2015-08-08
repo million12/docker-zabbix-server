@@ -15,6 +15,9 @@ DB_ADDRESS=${DB_PORT_3306_TCP_ADDR:-$(echo $DB_ADDRESS)}
 DB_PASS=${DB_ENV_MYSQL_ROOT_PASSWORD:-$(echo $DB_PASS)}
 DB_USER=${DB_ENV_MYSQL_USER:-$(echo $DB_USER)}
 
+# Sets the default timezone
+TIME_ZONE=${TIME_ZONE:-UTC} # Sets the time zone based on the TIME_ZONE env var, or uses UTC
+
 # Logging Finctions
 log() {
   if [[ "$@" ]]; then echo "${bold}${green}[LOG `date +'%T'`]${reset} $@";
@@ -71,11 +74,16 @@ email_setup() {
 slack_webhook() {
   sed -i 's#SLACK_WEBHOOK#'$SLACK_WEBHOOK'#g' /usr/local/share/zabbix/alertscripts/zabbix_slack.sh
 }
+set_timezone() {
+  ln -sf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
+  sed -i 's#date.timezone = UTC#date.timezone = '${TIME_ZONE}'#g' /etc/php.d/zz-zabbix.ini
+}
 ####################### End of default settings #######################
 # Zabbix default sql files 
 ZABBIX_SQL_DIR="/usr/local/src/zabbix/database/mysql"
 log "Preparing server configuration"
 update_config
+set_timezone
 log "Config updated."
 log "Enabling Logging and pid management."
 logging
