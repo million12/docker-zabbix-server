@@ -86,7 +86,7 @@ docker run \
 	--name zabbix \
 	-p 80:80 \
 	-p 10051:10051 \
-	--link some-mariadb:db
+	--link some-mariadb:db \
 	million12/zabbix-server
 ~~~
 
