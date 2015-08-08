@@ -64,6 +64,7 @@ update_config() {
   sed -i 's/DBHost=zabbix.db/DBHost='${DB_ADDRESS}'/g' /usr/local/etc/zabbix_server.conf
   sed -i 's/DB_ADDRESS/'${DB_ADDRESS}'/g' /usr/local/src/zabbix/frontends/php/conf/zabbix.conf.php
   sed -i 's/DB_USER/'${DB_USER}'/g' /usr/local/src/zabbix/frontends/php/conf/zabbix.conf.php
+  sed -i 's/DB_PASS/'${DB_PASS}'/g' /usr/local/src/zabbix/frontends/php/conf/zabbix.conf.php
 }
 email_setup() {
   sed -i 's/default@domain.com/'${ZABBIX_ADMIN_EMAIL}'/g' /usr/local/share/zabbix/alertscripts/zabbix_sendmail.sh
