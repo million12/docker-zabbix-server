@@ -9,6 +9,15 @@ white=`tput setaf 7`
 bold=`tput bold`
 reset=`tput sgr0`
 separator=$(echo && printf '=%.0s' {1..100} && echo)
+
+# Links mysql db via docker links or uses the DB_ADDRESS/DB_USER/DB_PASS env variables
+DB_ADDRESS=${DB_PORT_3306_TCP_ADDR:-$(echo $DB_ADDRESS)}
+DB_PASS=${DB_ENV_MYSQL_ROOT_PASSWORD:-$(echo ${DB_ENV_MARIADB_PASS:-$(echo $DB_PASS)})}
+DB_USER=${DB_ENV_MYSQL_USER:-$(echo ${DB_ENV_MARIADB_USER:-$(echo $DB_USER)})}
+
+# Sets the default timezone
+TIME_ZONE=${TIME_ZONE:-UTC} # Sets the time zone based on the TIME_ZONE env var, or uses UTC
+
 # Logging Finctions
 log() {
   if [[ "$@" ]]; then echo "${bold}${green}[LOG `date +'%T'`]${reset} $@";
@@ -52,9 +61,10 @@ fix_permissions() {
 update_config() {
   sed -i 's/DBUser=zabbix/DBUser='${DB_USER}'/g' /usr/local/etc/zabbix_server.conf
   sed -i 's/DBPassword=zabbix/DBPassword='${DB_PASS}'/g' /usr/local/etc/zabbix_server.conf
-  sed -i 's/DB_USER/'${DB_ADDRESS}'/g' /usr/local/etc/web/zabbix.conf.php
-  sed -i 's/DB_USER/'${DB_USER}'/g' /usr/local/etc/web/zabbix.conf.php
-  sed -i 's/DB_PASS/'${DB_PASS}'/g' /usr/local/etc/web/zabbix.conf.php
+  sed -i 's/DBHost=zabbix.db/DBHost='${DB_ADDRESS}'/g' /usr/local/etc/zabbix_server.conf
+  sed -i 's/DB_ADDRESS/'${DB_ADDRESS}'/g' /usr/local/src/zabbix/frontends/php/conf/zabbix.conf.php
+  sed -i 's/DB_USER/'${DB_USER}'/g' /usr/local/src/zabbix/frontends/php/conf/zabbix.conf.php
+  sed -i 's/DB_PASS/'${DB_PASS}'/g' /usr/local/src/zabbix/frontends/php/conf/zabbix.conf.php
 }
 email_setup() {
   sed -i 's/default@domain.com/'${ZABBIX_ADMIN_EMAIL}'/g' /usr/local/share/zabbix/alertscripts/zabbix_sendmail.sh
@@ -65,11 +75,16 @@ email_setup() {
 slack_webhook() {
   sed -i 's#SLACK_WEBHOOK#'$SLACK_WEBHOOK'#g' /usr/local/share/zabbix/alertscripts/zabbix_slack.sh
 }
+set_timezone() {
+  ln -sf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime
+  sed -i 's#date.timezone = UTC#date.timezone = '${TIME_ZONE}'#g' /etc/php.d/zz-zabbix.ini
+}
 ####################### End of default settings #######################
-# Zabbix default sql files 
+# Zabbix default sql files
 ZABBIX_SQL_DIR="/usr/local/src/zabbix/database/mysql"
 log "Preparing server configuration"
 update_config
+set_timezone
 log "Config updated."
 log "Enabling Logging and pid management."
 logging
@@ -83,7 +98,7 @@ if ! mysql -u ${DB_USER} -p${DB_PASS} -h ${DB_ADDRESS} -e "use zabbix;"; then
   log "Database and user created. Importing Default SQL"
   log `import_zabbix_db`
   log "Import Finished. Starting"
-else 
+else
   log "Zabbix DB Exists. Starting server."
 fi
 log "Editing Admin Email Server Settings"

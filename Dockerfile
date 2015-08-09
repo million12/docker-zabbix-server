@@ -12,3 +12,4 @@ ENV \
   SLACK_WEBHOOK=SLACK_WEBHOOK
 
 COPY container-files /
+RUN mv /usr/local/etc/web/zabbix.conf.php /usr/local/src/zabbix/frontends/php/conf/zabbix.conf.php
