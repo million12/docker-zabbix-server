@@ -1,8 +1,12 @@
-FROM zabbix/zabbix-server-2.4:2.4.5
+FROM zabbix/zabbix-server-2.4:2.4.6
 MAINTAINER Marcin Ryzycki marcin@m12.io, Przemyslaw Ozgo linux@ozgo.info
 
 RUN \
-    easy_install simplejson
+  rpm --rebuilddb && yum clean all && \
+  yum install --nogpgcheck -y gcc make && \
+  easy_install simplejson && \
+  rpm -e --nodeps make gcc
+
 
 ENV \
   ZABBIX_ADMIN_EMAIL=default@domain.com \
