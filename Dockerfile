@@ -1,4 +1,4 @@
-FROM zabbix/zabbix-server-2.4:2.4.7
+FROM zabbix/zabbix-server-3.0:dev
 MAINTAINER Marcin Ryzycki marcin@m12.io, Przemyslaw Ozgo linux@ozgo.info
 
 RUN \
