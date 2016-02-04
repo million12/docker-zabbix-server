@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Slack incoming web-hook URL and user name
-WEBHOOK='SLACK_WEBHOOK'
+WEBHOOK=${SLACK_WEBHOOK}
 USER='Zabbix'
 CHANNEL=${1}
 SUBJECT=${2}
