@@ -1,0 +1,19 @@
+zabbix-db:
+  image: million12/mariadb
+  restart: always
+  environment:
+    - MARIADB_USER=admin
+    - MARIADB_PASS=sgTJKf3K8AqCNz
+
+zabbix:
+  image: million12/zabbix-server:latest
+  restart: always
+  links:
+    - zabbix-db
+  ports:
+    - "80:80"
+    - "10051:10051"
+  environment:
+    - ZS_DBHost=zabbix-db
+    - ZS_DBUser=admin
+    - ZS_DBPassword=sgTJKf3K8AqCNz
