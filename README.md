@@ -8,6 +8,7 @@
 [![Pulls on Docker Hub](https://img.shields.io/docker/pulls/million12/zabbix-server.svg)](https://hub.docker.com/r/million12/zabbix-server)  
 [![Docker Layers](https://badge.imagelayers.io/million12/zabbix-server:latest.svg)](https://hub.docker.com/r/million12/zabbix-server)
 
+[![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/?repo=https://github.com/million12/docker-zabbix-server/tree/master)
 
 [Docker Image](https://registry.hub.docker.com/u/million12/zabbix-server/) with Zabbix Server using CentOS-7 and Supervisor.
 Image is using external datbase.  
